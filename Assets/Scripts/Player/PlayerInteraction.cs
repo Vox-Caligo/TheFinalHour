@@ -48,6 +48,8 @@ public class PlayerInteraction : MonoBehaviour {
         } else if(!inPuzzle && Cursor.visible) {
             Cursor.visible = false;
         }
+
+        Cursor.visible = true; // FOR SANITY
     }
 
     void OnMouseOver() {
