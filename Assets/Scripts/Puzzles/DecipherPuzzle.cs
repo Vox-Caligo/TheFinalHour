@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 public class DecipherPuzzle : MonoBehaviour {
     private Text passage;
@@ -9,14 +10,26 @@ public class DecipherPuzzle : MonoBehaviour {
     private char[] chosenLetters = new char[4];
     private int[] typedLetters = new int[4];
     private Text[] correctTextBoxes;
+    private int[] chosenLettersLocation;
 
-	// Use this for initialization
-	void Start () {
+    // highlight letter
+    private bool showingHighlightedLetter = false;
+    private int highlightRunner = 0;
+
+    // timer items
+    private float timeLeft;
+    private const float MIN_DELAY_TIME = 2.5f;
+    private const float MAX_DELAY_TIME = 5.0f;
+    private const float MIN_HIGHLIGHT_TIME = 1.0f;
+    private const float MAX_HIGHLIGHT_TIME = 2.0f;
+
+    // Use this for initialization
+    void Start () {
         // gets the passage for the 
         chosenPassage = getPassage();
 
         // chooses 5 letters at random and sorts them in ascending order
-        int[] chosenLettersLocation = findChosenLetters();
+        chosenLettersLocation = findChosenLetters();
 
         // stores the letters to be hit in order 
         string uppercasePassage = chosenPassage.ToUpper();
@@ -37,6 +50,7 @@ public class DecipherPuzzle : MonoBehaviour {
 
         correctTextBoxes = transform.FindChild("Correct").GetComponentsInChildren<Text>();
 
+        timeLeft = Random.Range(MIN_DELAY_TIME, MAX_DELAY_TIME);
         // set timer for each letter to flash with random timings
     }
 
@@ -53,7 +67,7 @@ public class DecipherPuzzle : MonoBehaviour {
             }
         }
 
-        System.Array.Sort(chosenLetters);
+        System.Array.Sort(chosenLettersLocation);
         return chosenLettersLocation;
     }
 
@@ -72,9 +86,28 @@ public class DecipherPuzzle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        timeLeft -= Time.deltaTime;
+        if (timeLeft < 0) {
+            showingHighlightedLetter = !showingHighlightedLetter;
 
-        // accept input 
+            if (showingHighlightedLetter) {
+                if (highlightRunner + 1 < chosenLettersLocation.Length) {
+                    highlightRunner++;
+                } else {
+                    highlightRunner = 0;
+                }
 
+                string newPassageText = passage.text;
+                newPassageText = newPassageText.Insert(chosenLettersLocation[highlightRunner] + 1, "</color>");
+                newPassageText = newPassageText.Insert(chosenLettersLocation[highlightRunner], "<color=#ffa500ff>");
+                passage.text = newPassageText;
+
+                timeLeft = Random.Range(MIN_HIGHLIGHT_TIME, MAX_HIGHLIGHT_TIME);
+            } else {
+                passage.text = Regex.Replace(passage.text, "<.*?>", "").ToString();
+                timeLeft = Random.Range(MIN_DELAY_TIME, MAX_DELAY_TIME);
+            }
+        }
     }
 
     private void checkButtonPressed(char letter) {
