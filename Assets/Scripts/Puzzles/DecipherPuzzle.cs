@@ -4,8 +4,11 @@ using System.Collections;
 using System.Text.RegularExpressions;
 
 public class DecipherPuzzle : MonoBehaviour {
+    // passage
     private Text passage;
     private string chosenPassage;
+    private int currentPassageIndex = -1;
+
     private int chosenLetterIndex = 0;
     private char[] chosenLetters = new char[4];
     private int[] typedLetters = new int[4];
@@ -14,7 +17,7 @@ public class DecipherPuzzle : MonoBehaviour {
 
     // highlight letter
     private bool showingHighlightedLetter = false;
-    private int highlightRunner = 0;
+    private ArrayList previouslyHighlighted = new ArrayList();
 
     // timer items
     private float timeLeft;
@@ -25,6 +28,13 @@ public class DecipherPuzzle : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        setupNewDecipherPuzzle();
+        setButtons();
+        correctTextBoxes = transform.FindChild("Correct").GetComponentsInChildren<Text>();
+        timeLeft = Random.Range(MIN_DELAY_TIME, MAX_DELAY_TIME);
+    }
+
+    private void setupNewDecipherPuzzle() {
         // gets the passage for the 
         chosenPassage = getPassage();
 
@@ -38,20 +48,13 @@ public class DecipherPuzzle : MonoBehaviour {
         }
 
         // testing purposes: shows the chosen letters
-        foreach(char chosenLetter in chosenLetters) {
+        foreach (char chosenLetter in chosenLetters) {
             print("Chosen Letter: " + chosenLetter);
         }
 
         // finds passage box and sets the text
         passage = transform.FindChild("Passage").GetComponent<Text>();
         passage.text = chosenPassage;
-
-        setButtons();
-
-        correctTextBoxes = transform.FindChild("Correct").GetComponentsInChildren<Text>();
-
-        timeLeft = Random.Range(MIN_DELAY_TIME, MAX_DELAY_TIME);
-        // set timer for each letter to flash with random timings
     }
 
     private int[] findChosenLetters() {
@@ -91,10 +94,25 @@ public class DecipherPuzzle : MonoBehaviour {
             showingHighlightedLetter = !showingHighlightedLetter;
 
             if (showingHighlightedLetter) {
-                if (highlightRunner + 1 < chosenLettersLocation.Length) {
-                    highlightRunner++;
-                } else {
-                    highlightRunner = 0;
+
+                bool newlySelectedHighlight;
+                int highlightRunner;
+
+                do {
+                    newlySelectedHighlight = true;
+                    highlightRunner = Random.Range(0, chosenLetters.Length);
+
+                    foreach (int previousHighlight in previouslyHighlighted) {
+                        if (highlightRunner == previousHighlight) {
+                            newlySelectedHighlight = false;
+                        }
+                    }
+                } while (!newlySelectedHighlight);
+
+                previouslyHighlighted.Add(highlightRunner);
+                
+                if (previouslyHighlighted.Count >= chosenLetters.Length) {
+                    previouslyHighlighted.Clear();
                 }
 
                 string newPassageText = passage.text;
@@ -129,14 +147,24 @@ public class DecipherPuzzle : MonoBehaviour {
             foreach (Text correctTextBox in correctTextBoxes) {
                 correctTextBox.text = "";
             }
+
+            setupNewDecipherPuzzle();
         }
     }
 
     private string getPassage() {
         string[] passages = new string[] {
-            "For they are spirits of demons, performing signs, which go out to the kings of the whole world, to gather them together for the war of the great day of God, the Almighty."
+            "For they are spirits of demons, performing signs, which go out to the kings of the whole world, to gather them together for the war of the great day of God, the Almighty.",
+            "Many false prophets will arise and will mislead many."
         };
 
-        return passages[Random.Range(0, passages.Length)];
+        int newPassageIndex;
+        do {
+            newPassageIndex = Random.Range(0, passages.Length);
+        } while (newPassageIndex == currentPassageIndex);
+
+        currentPassageIndex = newPassageIndex;
+
+        return passages[currentPassageIndex];
     }
 }
