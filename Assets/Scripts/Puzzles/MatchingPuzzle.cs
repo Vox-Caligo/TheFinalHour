@@ -4,33 +4,69 @@ using System.Collections;
 
 public class MatchingPuzzle : MonoBehaviour {
     private ArrayList correctTileSpaces = new ArrayList();
+    private const int AMOUNT_OF_TILES = 12;
     private const int AMOUNT_OF_CORRECT_TILES = 8;
     private int currentTileSpace = 0;
-    Button[] inputButtons;
+    ArrayList inputButtons = new ArrayList();
 
     // Use this for initialization
     void Start () {
-        inputButtons = transform.FindChild("Input").GetComponentsInChildren<Button>();
         setButtons();
     }
 
     private void setButtons() {
         currentTileSpace = 0;
         correctTileSpaces.Clear();
-        
-        for (int i = 0; i < inputButtons.Length; i++) {
-            MatchingTilePiece tilePiece = inputButtons[i].GetComponent<MatchingTilePiece>();
+
+        for(int i = 0; i < AMOUNT_OF_TILES; i++) {
+            GameObject matchingPiece = (GameObject)GameObject.Instantiate(Resources.Load("Symbol Tiles/Matching Tile"));
+            matchingPiece.transform.SetParent(transform.FindChild("Input"), false);
+
+            matchingPiece.GetComponent<Button>().onClick.AddListener(() => {
+                compareTile(matchingPiece.GetComponent<MatchingTilePiece>().TileSpaces);
+            });
+
+            inputButtons.Add(matchingPiece);
+        }
+
+        setMatchingListeners();
+    }
+
+    private void setMatchingListeners() {
+        int currentlySelected = 0;
+
+        foreach(GameObject matchingPiece in inputButtons) {
+            MatchingTilePiece tilePiece = matchingPiece.GetComponent<MatchingTilePiece>();
             tilePiece.setRandomTile(correctTileSpaces);
 
-            if(i < AMOUNT_OF_CORRECT_TILES) {
+            if (currentlySelected < AMOUNT_OF_CORRECT_TILES) {
                 correctTileSpaces.Add(tilePiece.TileSpaces);
+                currentlySelected++;
             }
 
-            inputButtons[i].onClick.RemoveAllListeners();
+            Button matchingPieceButton = matchingPiece.GetComponent<Button>();
 
-            inputButtons[i].onClick.AddListener(() => {
-                compareTile(tilePiece.TileSpaces);
+            matchingPieceButton.onClick.RemoveAllListeners();
+
+            matchingPieceButton.onClick.AddListener(() => {
+                compareTile(matchingPiece.GetComponent<MatchingTilePiece>().TileSpaces);
             });
+        }
+
+        setTileLocations();
+    }
+
+    private void setTileLocations() {
+        foreach (GameObject matchingPiece in inputButtons) {
+            
+            float randomXLoc = Random.Range(-322, 330);
+            float randomYLoc = Random.Range(0, 235);
+            Vector3 newLocation = new Vector3(randomXLoc, randomYLoc);
+            
+            matchingPiece.transform.localPosition = newLocation;
+
+            Vector3 test = new Vector3(0, 0, Random.Range(0, 360));
+            matchingPiece.transform.Rotate(test);
         }
     }
 
@@ -69,11 +105,11 @@ public class MatchingPuzzle : MonoBehaviour {
 
             for (int i = 0; i < correctTileToCheck.Length; i++) {
                 if (tileToCheck[i] != correctTileToCheck[i]) {
-                    setButtons();
+                    setMatchingListeners();
                 }
             }
         } else {
-            setButtons();
+            setMatchingListeners();
         }
 
         currentTileSpace++;

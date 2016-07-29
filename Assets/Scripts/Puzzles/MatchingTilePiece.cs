@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MatchingTilePiece : MonoBehaviour {
     private int tileTypes = 4;
     private int[] tileSpaces = new int[4];
-
-    public void correctTile(int[] correctTileNumbers) {
-        tileSpaces = correctTileNumbers;
-    }
+    private Image[] tileImages;
 
     public void setRandomTile(ArrayList correctTiles) {
+        tileImages = gameObject.GetComponentsInChildren<Image>();
+
         bool setTile;
         int[] newTileSpaces = new int[tileSpaces.Length];
 
@@ -22,9 +22,9 @@ public class MatchingTilePiece : MonoBehaviour {
 
             setTile = checkTileIsIncorrect(correctTiles, newTileSpaces);
         } while (!setTile);
-
+        
         tileSpaces = newTileSpaces;
-        setTileLocation();
+        setTileImages();
     }
 
     private bool checkTileIsIncorrect(ArrayList correctTiles, int[] newTileSpaces) {
@@ -57,9 +57,28 @@ public class MatchingTilePiece : MonoBehaviour {
 
         return true;
     }
-
-    private void setTileLocation() {
-
+    
+    private void setTileImages() {
+        for(int i = 0; i < tileSpaces.Length; i++) {
+            switch(Random.Range(0, 3)) {
+                case 0:
+                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 1") as Sprite;
+                    break;
+                case 1:
+                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 2") as Sprite;
+                    break;
+                case 2:
+                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 3") as Sprite;
+                    break;
+                default:
+                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 4") as Sprite;
+                    break;
+            }
+        }
+        
+        tileImages[2].transform.localScale = new Vector3(-1, 1);
+        tileImages[3].transform.localScale = new Vector3(-1, -1);
+        tileImages[4].transform.localScale = new Vector3(1, -1); 
     }
 
     //private int[] tileSpaces = new int[4];
