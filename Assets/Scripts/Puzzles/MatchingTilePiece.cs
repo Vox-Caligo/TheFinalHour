@@ -7,6 +7,12 @@ public class MatchingTilePiece : MonoBehaviour {
     private int[] tileSpaces = new int[4];
     private Image[] tileImages;
 
+    public void setCorrectTile(int[] correctSpaces) {
+        tileSpaces = correctSpaces;
+        tileImages = gameObject.GetComponentsInChildren<Image>();
+        setTileImages();
+    }
+
     public void setRandomTile(ArrayList correctTiles) {
         tileImages = gameObject.GetComponentsInChildren<Image>();
 
@@ -60,39 +66,33 @@ public class MatchingTilePiece : MonoBehaviour {
     
     private void setTileImages() {
         for(int i = 0; i < tileSpaces.Length; i++) {
-            switch(Random.Range(0, 3)) {
+            Image tileImage = tileImages[i + 1];
+            Sprite testSprite;
+
+            switch (tileSpaces[i]) {
                 case 0:
-                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 1") as Sprite;
+                    testSprite = Resources.Load<Sprite>("Symbol Tiles/Symbol_1");
                     break;
                 case 1:
-                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 2") as Sprite;
+                    testSprite = Resources.Load<Sprite>("Symbol Tiles/Symbol_2");
                     break;
                 case 2:
-                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 3") as Sprite;
+                    testSprite = Resources.Load<Sprite>("Symbol Tiles/Symbol_3");
                     break;
                 default:
-                    tileImages[0].sprite = Resources.Load("Symbol Tiles/Symbol 4") as Sprite;
+                    testSprite = Resources.Load<Sprite>("Symbol Tiles/Symbol_4");
                     break;
             }
+
+            tileImage.sprite = testSprite;
         }
         
         tileImages[2].transform.localScale = new Vector3(-1, 1);
         tileImages[3].transform.localScale = new Vector3(-1, -1);
         tileImages[4].transform.localScale = new Vector3(1, -1); 
     }
-
-    //private int[] tileSpaces = new int[4];
+    
     public int[] TileSpaces {
         get { return tileSpaces; }
-    }
-
-    public string checkTileSpace() {
-        string holder = "";
-
-        for(int i = 0; i < tileSpaces.Length; i++) {
-            holder += tileSpaces[i] + ", ";
-        }
-
-        return holder;
     }
 }
