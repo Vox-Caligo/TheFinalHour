@@ -49,10 +49,12 @@
      <Compile Include="Assets\Scripts\Player\PlayerInteraction.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Puzzles\DecipherPuzzle.cs" />
+     <Compile Include="Assets\Scripts\Puzzles\FollowingPuzzle.cs" />
      <Compile Include="Assets\Scripts\Puzzles\MatchingPuzzle.cs" />
      <Compile Include="Assets\Scripts\Puzzles\MatchingTilePiece.cs" />
      <Compile Include="Assets\Scripts\Puzzles\Puzzle.cs" />
      <Compile Include="Assets\Scripts\Puzzles\PuzzleController.cs" />
+     <Compile Include="Assets\Scripts\Puzzles\TilePuzzles.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
