@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class FollowingPuzzle : TilePuzzles {
@@ -8,6 +9,15 @@ public class FollowingPuzzle : TilePuzzles {
     private bool showingChoices = true;
     private ArrayList roundPattern = new ArrayList();
     private int currentRoundIndex = 0;
+
+    // timer variables
+    private float timerTicker;
+    private int highlightTileIndex = -1;
+    private const float DELAY_BETWEEN_TILES = 1;
+    private const int MIN_TIME_DELAY = 2;
+    private const int MAX_TIME_DELAY = 5;
+    private const int MIN_TIME_SHOWN = 2;
+    private const int MAX_TIME_SHOWN = 2;
 
     protected override void Start() {
         setInitialValues();
@@ -71,8 +81,32 @@ public class FollowingPuzzle : TilePuzzles {
     }
 
     void Update() {
-        if(showingChoices) {
-            // flash items
+        timerTicker -= Time.deltaTime;
+
+        if (timerTicker <= 0) {
+            //DELAY_BETWEEN_TILES
+            
+            if (showingChoices) {
+                highlightTileIndex++;
+                print("highlightTileIndex: " + highlightTileIndex);
+                timerTicker = Random.Range(MIN_TIME_SHOWN, MAX_TIME_SHOWN);
+
+                if (highlightTileIndex < roundPattern.Count) {
+                    ((GameObject)roundPattern[highlightTileIndex]).GetComponent<Image>().color = Color.green;
+
+                    if (highlightTileIndex > 0) {
+                        ((GameObject)roundPattern[highlightTileIndex - 1]).GetComponent<Image>().color = CORRECT_DEFAULT_COLOR;
+                    }
+                } else {
+                    print("NB");
+                    ((GameObject)roundPattern[roundPattern.Count - 1]).GetComponent<Image>().color = CORRECT_DEFAULT_COLOR;
+                    timerTicker = Random.Range(MIN_TIME_DELAY, MAX_TIME_DELAY);
+                    showingChoices = false;
+                }
+            } else {
+                showingChoices = true;
+                highlightTileIndex = -1;
+            }
         }
     }
 }

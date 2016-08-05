@@ -43,6 +43,14 @@ public class TilePuzzles : MonoBehaviour {
             matchingPiece.transform.SetParent(transform.FindChild("Input"), false);
             inputButtons.Add(matchingPiece);
 
+            if(i == 0) {
+                matchingPiece.GetComponent<Image>().color = Color.red;
+            } else if(i == 1) {
+                matchingPiece.GetComponent<Image>().color = Color.yellow;
+            } else if(i == 2) {
+                matchingPiece.GetComponent<Image>().color = Color.green;
+            }
+
             // sets the correct images
             if (i < amountOfCorrectTiles) {
                 if (i % tilesPerCorrectRow == 0 && i != 0) {
