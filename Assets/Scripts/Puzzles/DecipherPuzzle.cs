@@ -47,11 +47,6 @@ public class DecipherPuzzle : MonoBehaviour {
             chosenLetters[i] = uppercasePassage[chosenLettersLocation[i]];
         }
 
-        // testing purposes: shows the chosen letters
-        foreach (char chosenLetter in chosenLetters) {
-            print("Chosen Letter: " + chosenLetter);
-        }
-
         // finds passage box and sets the text
         passage = transform.FindChild("Passage").GetComponent<Text>();
         passage.text = chosenPassage;

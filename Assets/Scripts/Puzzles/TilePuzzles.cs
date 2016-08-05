@@ -42,15 +42,7 @@ public class TilePuzzles : MonoBehaviour {
             GameObject matchingPiece = (GameObject)GameObject.Instantiate(Resources.Load("Symbol Tiles/Matching Tile"));
             matchingPiece.transform.SetParent(transform.FindChild("Input"), false);
             inputButtons.Add(matchingPiece);
-
-            if(i == 0) {
-                matchingPiece.GetComponent<Image>().color = Color.red;
-            } else if(i == 1) {
-                matchingPiece.GetComponent<Image>().color = Color.yellow;
-            } else if(i == 2) {
-                matchingPiece.GetComponent<Image>().color = Color.green;
-            }
-
+            
             // sets the correct images
             if (i < amountOfCorrectTiles) {
                 if (i % tilesPerCorrectRow == 0 && i != 0) {
@@ -142,7 +134,17 @@ public class TilePuzzles : MonoBehaviour {
     }
 
     // compares the selected tile to the correct tile
-    protected void compareTiles(int[] inputTileToCheck, int[] correctTileToCheck) { 
+    protected void compareTiles(int[] inputTileToCheck, int[] correctTileToCheck) {
+        string originalString = "";
+        string newString = "";
+
+        for (int i = 0; i < inputTileToCheck.Length; i++) {
+            originalString += inputTileToCheck[i];
+            newString += correctTileToCheck[i];
+        }
+
+        //print("Original: " + originalString);
+
         bool correctMatch = true;
         int[] tilesToRotate = correctTileToCheck;
 

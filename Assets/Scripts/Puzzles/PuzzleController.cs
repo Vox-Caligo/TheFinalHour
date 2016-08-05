@@ -11,6 +11,10 @@ public class PuzzleController : MonoBehaviour {
 	}
 	
 	public string getAvailablePuzzle() {
+        if(availablePuzzles == null) {
+            availablePuzzles = new ArrayList() { /*"maze",*/ "matching", "following", "decipher" };
+        }
+
         int randomPuzzleChoice = Random.Range(0, availablePuzzles.Count);
         string puzzleChoice = availablePuzzles[randomPuzzleChoice] as string;
         availablePuzzles.RemoveAt(randomPuzzleChoice);
