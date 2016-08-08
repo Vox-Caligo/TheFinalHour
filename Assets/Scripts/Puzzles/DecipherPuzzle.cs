@@ -4,6 +4,9 @@ using System.Collections;
 using System.Text.RegularExpressions;
 
 public class DecipherPuzzle : MonoBehaviour {
+    // encryption
+    private PuzzleEncryption encrypter;
+
     // passage
     private Text passage;
     private string chosenPassage;
@@ -50,6 +53,8 @@ public class DecipherPuzzle : MonoBehaviour {
         // finds passage box and sets the text
         passage = transform.FindChild("Passage").GetComponent<Text>();
         passage.text = chosenPassage;
+        
+        encrypter = new PuzzleEncryption(chosenPassage, chosenLettersLocation, 5);
     }
 
     private int[] findChosenLetters() {

@@ -8,7 +8,7 @@ public class Puzzle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // randomly choose puzzle
-        string puzzleType = GameObject.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
+        string puzzleType = "decipher";//.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
         switch (puzzleType) {
             case "maze":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Maze Puzzle")) as GameObject;

@@ -7,7 +7,7 @@ public class PuzzleController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        availablePuzzles = new ArrayList() { "maze", "matching", "following", "decipher" };
+        //availablePuzzles = new ArrayList() { "maze", "matching", "following", "decipher" };
 	}
 	
 	public string getAvailablePuzzle() {
