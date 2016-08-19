@@ -57,7 +57,6 @@ public class PlayerInteraction : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        print("hi");
         Cursor.lockState = CursorLockMode.Locked;
     }
 }

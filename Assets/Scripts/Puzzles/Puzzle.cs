@@ -8,10 +8,11 @@ public class Puzzle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // randomly choose puzzle
-        string puzzleType = "decipher";//.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
+        string puzzleType = "maze";//.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
         switch (puzzleType) {
             case "maze":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Maze Puzzle")) as GameObject;
+                puzzleUI.AddComponent<MazePuzzle>();
                 break;
             case "matching":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Matching Puzzle")) as GameObject;
@@ -19,6 +20,7 @@ public class Puzzle : MonoBehaviour {
                 break;
             case "following":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Following Puzzle")) as GameObject;
+                puzzleUI.AddComponent<FollowingPuzzle>();   // check if issue arises when it adds here instead of on prefab itself
                 break;
             case "decipher":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Decipher Puzzle")) as GameObject;

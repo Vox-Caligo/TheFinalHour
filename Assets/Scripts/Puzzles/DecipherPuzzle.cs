@@ -18,6 +18,9 @@ public class DecipherPuzzle : MonoBehaviour {
     private Text[] correctTextBoxes;
     private int[] chosenLettersLocation;
 
+    // encryption pieces
+    private Text[] encryptionFields;
+
     // highlight letter
     private bool showingHighlightedLetter = false;
     private ArrayList previouslyHighlighted = new ArrayList();
@@ -29,11 +32,16 @@ public class DecipherPuzzle : MonoBehaviour {
     private const float MIN_HIGHLIGHT_TIME = 1.0f;
     private const float MAX_HIGHLIGHT_TIME = 2.0f;
 
+    private const int ENCRYPTION_STEPS = 4;
+
     // Use this for initialization
     void Start () {
+        correctTextBoxes = transform.FindChild("Correct").GetComponentsInChildren<Text>();
+        encryptionFields = transform.FindChild("Encryptions").GetComponentsInChildren<Text>();
+
         setupNewDecipherPuzzle();
         setButtons();
-        correctTextBoxes = transform.FindChild("Correct").GetComponentsInChildren<Text>();
+        
         timeLeft = Random.Range(MIN_DELAY_TIME, MAX_DELAY_TIME);
     }
 
@@ -54,7 +62,10 @@ public class DecipherPuzzle : MonoBehaviour {
         passage = transform.FindChild("Passage").GetComponent<Text>();
         passage.text = chosenPassage;
         
-        encrypter = new PuzzleEncryption(chosenPassage, chosenLettersLocation, 5);
+        encrypter = new PuzzleEncryption(chosenPassage, chosenLettersLocation, ENCRYPTION_STEPS);
+        for(int i = 0; i < encryptionFields.Length; i++) {
+            encryptionFields[i].text = encrypter.retrieveEncryptionCode(i);
+        }
     }
 
     private int[] findChosenLetters() {
@@ -119,7 +130,6 @@ public class DecipherPuzzle : MonoBehaviour {
                 newPassageText = newPassageText.Insert(chosenLettersLocation[highlightRunner] + 1, "</color>");
                 newPassageText = newPassageText.Insert(chosenLettersLocation[highlightRunner], "<color=#ffa500ff>");
                 passage.text = newPassageText;
-
                 timeLeft = Random.Range(MIN_HIGHLIGHT_TIME, MAX_HIGHLIGHT_TIME);
             } else {
                 passage.text = Regex.Replace(passage.text, "<.*?>", "").ToString();
@@ -129,8 +139,7 @@ public class DecipherPuzzle : MonoBehaviour {
     }
 
     private void checkButtonPressed(char letter) {
-        //print("Letter: " + letter);
-        if(letter == chosenLetters[chosenLetterIndex]) {
+        if(letter == encrypter.retrieveCorrectLetter(chosenLetterIndex)) {
             // fill in the main buttons
             correctTextBoxes[chosenLetterIndex].text = letter.ToString();
 
@@ -154,7 +163,7 @@ public class DecipherPuzzle : MonoBehaviour {
 
     private string getPassage() {
         string[] passages = new string[] {
-            "For they are spirits of demons, performing signs, which go out to the kings of the whole world, to gather them together for the war of the great day of God, the Almighty.",
+            "For they are spirits of demons. Performing signs, which go out to the kings of the whole world. To gather them together for the war of the great day of God the Almighty.",
             "Many false prophets will arise and will mislead many."
         };
 
