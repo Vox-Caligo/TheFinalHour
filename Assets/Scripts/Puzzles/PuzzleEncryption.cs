@@ -56,7 +56,6 @@ public class PuzzleEncryption : MonoBehaviour {
             }
 
             finalEncryptions[i] = finalEncryption;
-            print("Final Encryption for #" + i + " (letter " + passage[startingLetterLocations[i]] + "): " + finalEncryption);
         }
     }
 
@@ -108,10 +107,6 @@ public class PuzzleEncryption : MonoBehaviour {
             }
 
             finalLetterLocations[i] = finalLocation;
-        }
-
-        for(int i = 0; i < finalLetterLocations.Length; i++) {
-            print("Answer for #" + i + ": " + passage[finalLetterLocations[i]]);
         }
     }
 

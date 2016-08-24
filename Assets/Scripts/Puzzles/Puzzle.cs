@@ -8,7 +8,7 @@ public class Puzzle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // randomly choose puzzle
-        string puzzleType = "maze";//.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
+        string puzzleType = GameObject.Find("Puzzle Controller").GetComponent<PuzzleController>().getAvailablePuzzle();
         switch (puzzleType) {
             case "maze":
                 puzzleUI = Instantiate(Resources.Load("Puzzles/Maze Puzzle")) as GameObject;
@@ -31,11 +31,6 @@ public class Puzzle : MonoBehaviour {
         }
         
         puzzleGroup = puzzleUI.GetComponent<CanvasGroup>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        
     }
 
     public void showPuzzle() {

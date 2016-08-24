@@ -38,8 +38,6 @@ public class PlayerInteraction : MonoBehaviour {
                 }
             } else if (hit.collider.gameObject.tag == "Item") {
                 print("Checking: " + hit.collider.name);
-            } else if (hit.collider.gameObject.tag == "Hiding") {
-                print("Checking: " + hit.collider.name);
             }
         }
 

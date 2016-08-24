@@ -60,14 +60,6 @@ public class FollowingPuzzle : TilePuzzles {
         for (int i = 0; i < tileAmount; i++) {
             int randomTileChoice = Random.Range(0, correctTileImages.Count);
             roundPattern.Add(correctTileImages[randomTileChoice]);
-
-            if (i == 0) {
-                ((GameObject)inputButtons[randomTileChoice]).GetComponent<Image>().color = Color.red;
-            } else if (i == 1) {
-                ((GameObject)inputButtons[randomTileChoice]).GetComponent<Image>().color = Color.yellow;
-            } else if (i == 2) {
-                ((GameObject)inputButtons[randomTileChoice]).GetComponent<Image>().color = Color.green;
-            }
         }
     }
 

@@ -29,6 +29,9 @@ public class MazePuzzle : MonoBehaviour {
     private MazeRunner mazeRunner;
     ArrayList validStartingSpots = new ArrayList();
 
+    // finish line stuff
+    ArrayList validFinishSpots = new ArrayList();
+
     private Vector2 _currentTile;
     public Vector2 CurrentTile {
         get { return _currentTile; }
@@ -47,6 +50,7 @@ public class MazePuzzle : MonoBehaviour {
         puzzleGroup = this.GetComponent<CanvasGroup>();
         generateMaze();
         createRunner();
+        placeFinishLine();
     }
 
     // generate maze
@@ -150,7 +154,6 @@ public class MazePuzzle : MonoBehaviour {
         for (int i = 0; i < mazeWalls.GetLength(0); i++) {
             for (int j = 0; j < mazeWalls.GetLength(1); j++) {
                 if(mazeWalls[i, j] == 1) {
-                    //mazeWall.transform.position = ;
                     GameObject builtWall = Instantiate(mazeWall) as GameObject;
                     builtWall.transform.SetParent(transform);
                     RectTransform wallPiece = builtWall.GetComponent<RectTransform>();
@@ -168,6 +171,9 @@ public class MazePuzzle : MonoBehaviour {
                 } else if(i == 1) {
                     Vector3 validStartingSpot = new Vector3(i * (wallPieceWidth * wallScaleX) + wallOffsetX, j * (wallPieceHeight * wallScaleY) + wallOffsetY);
                     validStartingSpots.Add(validStartingSpot);
+                } else if(i == mazeWalls.GetLength(0) - 2) {
+                    Vector3 validStartingSpot = new Vector3(i * (wallPieceWidth * wallScaleX) + wallOffsetX, j * (wallPieceHeight * wallScaleY) + wallOffsetY);
+                    validFinishSpots.Add(validStartingSpot);
                 }
             }
         }
@@ -185,6 +191,20 @@ public class MazePuzzle : MonoBehaviour {
 
         RectTransform mazeRunnerRect = mazeRunnerObj.GetComponent<RectTransform>();
         BoxCollider2D runnerCollider = mazeRunnerObj.GetComponent<BoxCollider2D>();
+        runnerCollider.size = new Vector2(mazeRunnerRect.rect.width, mazeRunnerRect.rect.height);
+    }
+
+    private void placeFinishLine() {
+        GameObject mazeRunnerObj = Instantiate(Resources.Load("Maze/Maze End")) as GameObject;
+        mazeRunnerObj.transform.SetParent(transform);
+
+        Vector3 chosenStart = (Vector3)validFinishSpots[rnd.Next(validFinishSpots.Count)];
+        mazeRunnerObj.transform.localScale = new Vector3(.15f, .15f);
+        mazeRunnerObj.transform.localPosition = chosenStart;
+
+        RectTransform mazeRunnerRect = mazeRunnerObj.GetComponent<RectTransform>();
+        BoxCollider2D runnerCollider = mazeRunnerObj.GetComponent<BoxCollider2D>();
+        runnerCollider.isTrigger = true;
         runnerCollider.size = new Vector2(mazeRunnerRect.rect.width, mazeRunnerRect.rect.height);
     }
 
