@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\PlayerVisibility.cs" />
-     <Compile Include="Assets\Raphael.cs" />
+     <Compile Include="Assets\Scripts\Angels\AngelAI.cs" />
+     <Compile Include="Assets\Scripts\Angels\Raphael.cs" />
      <Compile Include="Assets\Scripts\Player\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerInteraction.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Scripts\Puzzles\PuzzleController.cs" />
      <Compile Include="Assets\Scripts\Puzzles\PuzzleEncryption.cs" />
      <Compile Include="Assets\Scripts\Puzzles\TilePuzzles.cs" />
+     <Compile Include="Assets\Waypoint.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Raphael : MonoBehaviour {
+public class Waypoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
